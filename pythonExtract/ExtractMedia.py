@@ -7,6 +7,7 @@ import time
 import shutil
 import ErrorHandling
 
+
 # parse mpd -> We parse the mpd and assign all the parsed data to the dash_obj, it's pass by reference so we don't need to return anything.
 # Args:
 # dash_obj, contains all the information about the parsed mpd
