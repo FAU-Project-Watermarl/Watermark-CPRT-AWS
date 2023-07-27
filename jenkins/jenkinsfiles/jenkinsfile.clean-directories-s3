@@ -1,0 +1,28 @@
+// The EC2 instance ID that will be used in this pipeline
+INSTANCE = 'i-03d877e4cae11232c'
+pipeline {
+    agent any
+
+    parameters {
+        /* groovylint-disable-next-line LineLength */
+        choice(description: 'Directories to delete inside S3 buckect ', name: 'DIRECTORY', choices: [ 'test_signal', 'validated_signal' ])
+    }
+    stages {
+        // Stage to describe the current state of the EC2 instance
+        stage('EC2 current state') {
+            steps {
+                // Using the AWS CLI to describe the EC2 instance
+                sh "aws ec2 describe-instances --instance-ids ${INSTANCE}"
+            }
+        }
+        // Stage to stop the EC2 machine
+        stage('Delete S3 foder content') {
+            steps {
+                echo "Delete S3:testbuckect-watermarking/$DIRECTORY content"
+                
+                // Using the AWS CLI to delete the conten of s3 folder'
+                sh "/tmp/scripts/clean-directories-s3.sh $DIRECTORY"
+            }
+        }
+    }
+}

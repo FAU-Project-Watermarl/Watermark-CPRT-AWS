@@ -1,0 +1,45 @@
+#!/usr/bin/env groovy
+
+// The EC2 instance ID that will be used in this pipeline
+INSTANCE = 'i-03d877e4cae11232c'
+
+pipeline {
+    agent any
+
+    // Parameters section where input parameters can be provided when triggering the pipeline
+    parameters {
+        // Parameter to specify the Output work directory, with a default value of 'dash'
+        string(defaultValue: 'dash', description: 'Output directory, if empty we will use dash as default name', name: 'OUTPUT_DIR')
+        // Parameter to specify the Dash Manifest URL, with a default value of a bitmovin test signal
+        string(defaultValue: 'https://bitmovin-a.akamaihd.net/content/playhouse-vr/mpds/105560.mpd', description: 'Dash Manifest URL, if let empty we will use a bitmovin example', name: 'URL_MANIFEST')
+    }
+
+    stages {
+        // Stage to describe the current state of the EC2 instance
+        stage('EC2 current state') {
+            steps {
+                // Using the AWS CLI to describe the EC2 instance
+                sh "aws ec2 describe-instances --instance-ids ${INSTANCE}"
+            }
+        }
+        // Stage to parse manifest and retrieve all video and audion
+        // fragments and apply the cprt atom with the uuid embeed
+        stage('Run Main script on ec2') {
+            steps {
+                echo '''
+                    The url will retrieve the manifest file and parse it, to extract all video, audio fragments
+                    each init.mp4 file will be apply the cprt atom with the uuid embeeded inside
+                '''
+                sh "/tmp/scripts/run-main.sh $URL_MANIFEST $OUTPUT_DIR"
+            }
+        }
+        // Stage to remove the work temporary folder from the EC2 instance
+        stage('EC2 Remove work temp folder') {
+            steps {
+                echo 'Delete temporary folder and files'
+                // Execute the script to remove the temporary directory on the EC2 instance, using 'OUTPUT_DIR'
+                sh "/tmp/scripts/remove-directory-ec2.sh $OUTPUT_DIR"
+            }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+// The EC2 instance ID that will be used in this pipeline
+INSTANCE = 'i-03d877e4cae11232c'
+
+pipeline {
+    agent any
+
+    // Parameters section where input parameters can be provided when triggering the pipeline
+    parameters {
+        // Parameter to specify the Output validation directory, with a default value of 'ouputValidation'
+        string(defaultValue: 'ouputValidation', description: 'Output validation directory, if empty we will use <ouputValidation> as default name', name: 'OUTPUT_DIR')
+        // Parameter to specify the Dash Manifest URL, with a default value of 'NONE'
+        string(defaultValue: 'NONE', description: 'Dash Manifest URL, type NONE to use the url of last Manifest URL Extracted', name: 'URL_MANIFEST')
+    }
+
+    stages {
+        // Stage to describe the current state of the EC2 instance
+        stage('EC2 current state') {
+            steps {
+                // Using the AWS CLI to describe the EC2 instance
+                sh 'aws ec2 describe-instances --instance-ids ${INSTANCE}'
+            }
+        }
+        // Stage to run the validation script on the EC2 instance
+        stage('Run Validation script on ec2') {
+            steps {
+                script {
+                    if (URL_MANIFEST.contains('NONE')) {
+                        echo "The following Dash Manifest url $URL_MANIFEST will be validated to found a CPRT box with our UUID "
+                    }
+                    else {
+                        echo "The last succesful Manifest extracted will be validated to found a CPRT box with our UUID "
+                    }
+                    // Execute the validation script on the EC2 instance, using 'URL_MANIFEST'
+                    // and 'OUTPUT_DIR' as input parameters
+                    sh "/tmp/scripts/run-validation.sh $URL_MANIFEST $OUTPUT_DIR"
+                }
+            }
+        }
+        // Stage to remove the work temporary folder from the EC2 instance
+        stage('EC2 Remove work temp folder') {
+            steps {
+                echo 'Delete temporary folder and files'
+                // Execute the script to remove the temporary directory on the EC2 instance, using 'OUTPUT_DIR'
+                sh "/tmp/scripts/remove-directory-ec2.sh $OUTPUT_DIR"
+            }
+        }
+    }
+}

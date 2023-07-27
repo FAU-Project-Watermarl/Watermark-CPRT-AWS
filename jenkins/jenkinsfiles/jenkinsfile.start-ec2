@@ -1,0 +1,27 @@
+// The EC2 instance ID that will be used in this pipeline
+INSTANCE = "i-03d877e4cae11232c"
+pipeline {
+    agent any
+
+    stages {
+        // Stage to describe the current state of the EC2 instance
+        stage('Start EC2 machine') {
+            steps {
+                // Using the AWS CLI to start the EC2 instance
+                sh "/usr/local/bin/aws ec2 start-instances --instance-ids $INSTANCE"
+                // Sleeping for 30 seconds to allow the EC2 instance to start up
+                sleep(30)
+            }
+        }
+        // Stage to retrieve the current public IP address of the EC2 instance
+        stage('EC2 current state') {
+            steps {
+                // Retrieving the public IP address of the EC2 instance using AWS CLI and storing it in 'newIp' variable
+                sh '''
+                    newIp=$(aws ec2 describe-instances --instance-ids ${INSTANCE} | grep PublicIpAddress | awk '{ print $2 }' | sed 's/.$//')
+                    echo ${newIp}
+                '''
+            }
+        }
+    }
+}
