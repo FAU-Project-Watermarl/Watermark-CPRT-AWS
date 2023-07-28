@@ -35,8 +35,6 @@ def extract_media_into_folder(manifest_root, media_file, folder_path_output, is_
         os.makedirs(output_directory, exist_ok=True)
     else:
         folder_path_output = f"./{folder_path_output}"
-        
-
 
     extract_mpd_segments = f"curl {manifest_root}/{media_file} --output {folder_path_output}"
     subprocess.run(extract_mpd_segments, shell=True)
