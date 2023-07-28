@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<smil>
+    <head/>
+        <body>
+            <switch>
+                <video src="3dGlasses.mp4" system-bitrate="354304" width="428"/>
+                <video src="3dGlasses.mp4" system-bitrate="507904" width="428"/>
+                <video src="3dGlasses.mp4" system-bitrate="1122304" width="640"/>
+        </switch>
+    </body>
+</smil>
