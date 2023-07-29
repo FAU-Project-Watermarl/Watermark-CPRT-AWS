@@ -4,7 +4,6 @@ import ErrorHandling
 import os
 from pymongo.errors import PyMongoError
 from datetime import datetime
-import dotenv
 from dotenv import load_dotenv
 
  # outputs "value"
