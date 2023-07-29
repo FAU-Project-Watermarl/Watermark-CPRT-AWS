@@ -37,19 +37,15 @@ def main():
 
         for vid_quality_id in dash_obj["video_qualities"]:
             print(f"video_id: {vid_quality_id}")
-            ExtractSegmentMedia.extract_media_segments(dash_obj, vid_quality_id, video_media)
-            Mp4ContainerManip.apply_uuid(dash_obj, vid_quality_id, video_media)
+            ExtractSegmentMedia.extract_media_segments(dash_obj, vid_quality_id, video_media, False, True)
 
         for aud_quality_id in dash_obj["audio_qualities"]:
             print(f"audio_id: {aud_quality_id}")
-
-            ExtractSegmentMedia.extract_media_segments(dash_obj, aud_quality_id, audio_media)
-            Mp4ContainerManip.apply_uuid(dash_obj, aud_quality_id, audio_media)
+            ExtractSegmentMedia.extract_media_segments(dash_obj, aud_quality_id, audio_media, False, True)
 
         extracted_value = Mp4ContainerManip.extract_uuid(
             dash_obj, dash_obj["video_qualities"][0], video_media
         )
-
     else:
         os.chdir(os.path.dirname(dash_obj["manifest_output_path"]))
         for id in dash_obj["base_urls"]:
@@ -62,12 +58,14 @@ def main():
 
     script_directory = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_directory)
-
+    
     Database.insert_uuid_value(
        dash_obj
        )
+    
+    uuid_status = Database.check_stored_uuid(extracted_value) 
 
-    ValidateMedia.validate_uuid(extracted_value)
+    ValidateMedia.validate_uuid(extracted_value,uuid_status)
 
     print(
       "Total elapsed time duration to apply UUID:",

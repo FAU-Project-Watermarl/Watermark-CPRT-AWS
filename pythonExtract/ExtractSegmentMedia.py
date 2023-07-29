@@ -1,13 +1,15 @@
 import MediaTransfer
 import ErrorHandling
+import Mp4ContainerManip
 import re
 
+# extract media -> extracts the parsed media content be it the init or the segements or both.
 # Args:
 # dash_obj, contains all the information about the parsed mpd
 # quality od, the id of what we are trying to extract
 # media_type, audio or video
 # init_only, optional value, true if we only want to extract the init false if we want the segments aswell.
-def extract_media_segments(dash_obj, quality_id, media_type, init_only=False):
+def extract_media_segments(dash_obj, quality_id, media_type, init_only=False, apply_uuid=True):
 
     if(dash_obj["edge_case_base_url"]):
         print("Extracting File:", quality_id)
@@ -25,6 +27,8 @@ def extract_media_segments(dash_obj, quality_id, media_type, init_only=False):
 
     print("Extracting File:", init_template)
     MediaTransfer.extract_media_into_folder(dash_obj['manifest_root'], init_template, init_template)
+    if(apply_uuid):
+        Mp4ContainerManip.apply_uuid(dash_obj, quality_id, media_type)
 
     if(init_only):
         return

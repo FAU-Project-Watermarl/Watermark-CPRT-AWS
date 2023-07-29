@@ -1,12 +1,17 @@
 from pymongo.mongo_client import MongoClient
 import certifi
 import ErrorHandling
+import os
 from pymongo.errors import PyMongoError
 from datetime import datetime
+import dotenv
+from dotenv import load_dotenv
+
+ # outputs "value"
 
 db_name = "watermark"
 collection_name = "uuid"
-uri = "mongodb+srv://mark:mark@cluster0.82o4qbt.mongodb.net/?retryWrites=true&w=majority"
+env_file_name = "MongoCredentials.env"
 
 client = None
 db = None
@@ -15,6 +20,12 @@ collection = None
 def open_db(custom_db=None, custom_collection=None):
     global client, db, collection
 
+    dotenv_path = f"{os.getcwd()}/{env_file_name}"
+    load_dotenv(dotenv_path)
+    uri = os.getenv("MONGODB_URI")
+    if(uri == None):
+        ErrorHandling.error_handling_format("Unable to get uri credentials from env")
+        
     client = MongoClient(uri, tlsCAFile=certifi.where())
     selected_db_name = db_name
     selected_collection_name = collection_name
@@ -68,5 +79,4 @@ def insert_uuid_value(dash_obj):
         })
     except PyMongoError as e:
         ErrorHandling.error_handling_format(str(e))
-
 
