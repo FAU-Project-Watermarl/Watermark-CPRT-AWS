@@ -52,9 +52,9 @@ def check_stored_uuid(value):
         ErrorHandling.error_handling_format(str(e))
         
 #inserts into db json some value
-def insert_uuid_value(uuid, dash_obj):
+def insert_uuid_value(dash_obj):
     
-    str_url = f'https://d6p5bgq5sl2je.cloudfront.net/{dash_obj["bucket_filename"]}/{uuid}/{dash_obj["manifest_output_nested_path"]}'
+    str_url = f'https://d6p5bgq5sl2je.cloudfront.net/{dash_obj["bucket_filename"]}/{dash_obj["uuid_value"]}/{dash_obj["manifest_output_nested_path"]}'
 
     try:
         timestamp = datetime.now()
@@ -62,10 +62,11 @@ def insert_uuid_value(uuid, dash_obj):
         print("Associated Url for validation:",  str_url)
         collection.insert_one( 
         {
-        "_id":uuid,
+        "_id":dash_obj["uuid_value"],
         "time_stamp":timestamp, 
         "validation_url_link":str_url
         })
     except PyMongoError as e:
         ErrorHandling.error_handling_format(str(e))
+
 

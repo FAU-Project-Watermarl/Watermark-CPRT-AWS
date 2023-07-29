@@ -2,7 +2,6 @@ import subprocess
 import os
 import requests
 import ErrorHandling
-import shutil
 
 # extract file -> extracts the file to the current dir
 # Args:
@@ -44,9 +43,9 @@ def extract_media_into_folder(manifest_root, media_file, folder_path_output, is_
 # Args:
 # file path, the path of the folder or file that is going to be moved to the s3 bucker
 # bucket path, the aws bucket path.
-def insert_media_into_aws(dash_obj, uuid):
+def insert_media_into_aws(dash_obj):
 
-    temp_dir = f"./temp_dir/{uuid}/"
+    temp_dir = f"./temp_dir/{dash_obj['uuid_value']}/"
     os.makedirs(temp_dir, exist_ok=True)
     subprocess.run(f"mkdir -p {temp_dir}", shell=True)
 
@@ -57,7 +56,7 @@ def insert_media_into_aws(dash_obj, uuid):
     subprocess.run(insert_media_folder, shell=True)
     subprocess.run(f"rm -rf ./{temp_dir}", shell=True)
 
-    subprocess.run(f"echo 'https://d6p5bgq5sl2je.cloudfront.net/{dash_obj['bucket_filename']}/{uuid}/{dash_obj['manifest_output_nested_path']}' > {dash_obj['bucket_filename']}.txt", shell=True)
+    subprocess.run(f"echo 'https://d6p5bgq5sl2je.cloudfront.net/{dash_obj['bucket_filename']}/{dash_obj['uuid_value']}/{dash_obj['manifest_output_nested_path']}' > {dash_obj['bucket_filename']}.txt", shell=True)
 
 # path status -> checks if a given request is valid or not
 # Args:
@@ -74,4 +73,5 @@ def path_status(manifest_root, manifest_path, is_root):
         return False
 
     return True
+
 
