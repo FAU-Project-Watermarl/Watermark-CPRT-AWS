@@ -76,7 +76,8 @@ def main():
     Database.close_db()
 
     MediaTransfer.insert_media_into_aws(
-       dash_obj,
+        dash_obj["uuid_value"],
+        dash_obj,
     )
 
 if __name__ == "__main__":
