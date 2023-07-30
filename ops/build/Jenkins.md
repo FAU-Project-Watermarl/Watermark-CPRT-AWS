@@ -34,7 +34,7 @@
 - [X] Connect to http://<your_server_public_DNS>:8080 from your browser(AWS ec2 DNS)
 - [X] Use initial password displayed at the end of the script the script or `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
 
-![aasas](https://www.jenkins.io/doc/book/resources/tutorials/AWS/unlock_jenkins.png)
+![Jenkins first start](https://www.jenkins.io/doc/book/resources/tutorials/AWS/unlock_jenkins.png)
 
 - [X]  Jenkins installation script directs you to the Customize Jenkins page. Click Install suggested plugins.
 - [X] Once the installation is complete, the Create First Admin User will open. Enter your information, and then select Save and Continue.
