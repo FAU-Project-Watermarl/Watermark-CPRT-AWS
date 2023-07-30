@@ -28,6 +28,9 @@
 #   * Select an existing security group previously created
 #   * Launch instance
 
+# Show the commands and stop on any error
+set -xe
+
 # Update the package list and install chrony for time synchronization.
 sudo apt-get updateb -y
 sudo apt-get install -y chrony
