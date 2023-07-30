@@ -25,9 +25,14 @@
    * Select an existing security group previously created
    * Launch instance.  
 
-- [X] Run jenkins-instance.sh script inside the jenkins ec2 instance
+- [X] Run `jenkins-instance.sh` script inside the jenkins ec2 instance
+- [X] Make user to have AWS credential info to fill when `aws configure` is called
+   - AWS Access Key ID
+   - AWS Secret Access Key
+   - Default region name
+   - Default output format
 - [X] Connect to http://<your_server_public_DNS>:8080 from your browser(AWS ec2 DNS)
-- [X] Use initial password displayed in the script
+- [X] Use initial password displayed at the end of the script the script or `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
 
 ![aasas](https://www.jenkins.io/doc/book/resources/tutorials/AWS/unlock_jenkins.png)
 
