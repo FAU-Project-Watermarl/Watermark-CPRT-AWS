@@ -23,8 +23,8 @@ def parse_mpd(root, url, parse_type):
             uuid_value = str(uuid.uuid4())
             not_unique = Database.check_stored_uuid(uuid_value)
     else:
-        bucket_path = "validated_signal"
-        bucket_filename = "testbucket-watermarking/validated_signal"
+        bucket_path = "testbucket-watermarking/validated_signal"
+        bucket_filename = "validated_signal"
 
     dash_obj = {
         "manifest_path": None,
