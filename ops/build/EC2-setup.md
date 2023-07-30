@@ -25,11 +25,14 @@
    * Select an existing security group previously created
    * Launch instance.  
 
-![ec2 create instance](https://testbucket-watermarking.s3.amazonaws.com/doc-images/ec2.JPG)
+![ec2 create instance](https://testbucket-watermarking.s3.amazonaws.com/doc-images/ec2.JPG | width=200)
 
 - [X] SSh in your ec2 instance to check is working and you have ssh connection
-   - ssh -i "keyPair.pem" admin@ec2IpAddress
-- [X] 
-- [X] Run ec2-instance-setup.sh script inside the ec2 instance
+   - `ssh -i "keyPair.pem" admin@ec2IpAddress`
+- [X] Inside the ec2 machine clone the github repo
+   - `git clone https://github.com/FAU-Project-Watermarl/Watermark-CPRT-AWS.git`
+- [X] Run ec2-instance-setup.sh script inside the ec2 instance (this will install all need to run)
+   - `bash ./Watermark-CPRT-AWS/ops/build/ec2-instance-setup.sh`
+
   
 
