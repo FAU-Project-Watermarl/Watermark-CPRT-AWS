@@ -83,7 +83,7 @@ def main():
     if(extracted_uuid != None):
         uuid_status = Database.check_stored_uuid(extracted_uuid) 
         validate_uuid(extracted_uuid, uuid_status)
-        MediaTransfer.insert_media_into_aws(dash_obj)
+        MediaTransfer.insert_media_into_aws(extracted_uuid, dash_obj)
     
     end_time = time.time()
     total_time_ms = int((end_time - start_time) * 1000)

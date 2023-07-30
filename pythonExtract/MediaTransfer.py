@@ -43,20 +43,20 @@ def extract_media_into_folder(manifest_root, media_file, folder_path_output, is_
 # Args:
 # file path, the path of the folder or file that is going to be moved to the s3 bucker
 # bucket path, the aws bucket path.
-def insert_media_into_aws(dash_obj):
+def insert_media_into_aws(uuid, dash_obj):
 
-    temp_dir = f"./temp_dir/{dash_obj['uuid_value']}/"
+    temp_dir = f"./temp_dir/{uuid}/"
     os.makedirs(temp_dir, exist_ok=True)
     subprocess.run(f"mkdir -p {temp_dir}", shell=True)
 
     subprocess.run(f"pwd",shell=True)
     subprocess.run(f"cp -r {dash_obj['root_folder']}/ ./{temp_dir}", shell=True)
-
+    
     insert_media_folder = f"aws s3 sync ./temp_dir/  s3://{dash_obj['bucket_path']}/"
     subprocess.run(insert_media_folder, shell=True)
     subprocess.run(f"rm -rf ./{temp_dir}", shell=True)
 
-    subprocess.run(f"echo 'https://d6p5bgq5sl2je.cloudfront.net/{dash_obj['bucket_filename']}/{dash_obj['uuid_value']}/{dash_obj['manifest_output_nested_path']}' > {dash_obj['bucket_filename']}.txt", shell=True)
+    subprocess.run(f"echo 'https://d6p5bgq5sl2je.cloudfront.net/{dash_obj['bucket_filename']}/{uuid}/{dash_obj['manifest_output_nested_path']}' > {dash_obj['bucket_filename']}.txt", shell=True)
 
 # path status -> checks if a given request is valid or not
 # Args:

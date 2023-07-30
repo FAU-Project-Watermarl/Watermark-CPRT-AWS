@@ -23,8 +23,8 @@ def parse_mpd(root, url, parse_type):
             uuid_value = str(uuid.uuid4())
             not_unique = Database.check_stored_uuid(uuid_value)
     else:
-        bucket_path = "testbucket-watermarking/validated_signal"
-        bucket_filename = "validated_signal"
+        bucket_path = "testbucket-watermarking/validate_signal"
+        bucket_filename = "validate_signal"
 
     dash_obj = {
         "manifest_path": None,
@@ -174,7 +174,6 @@ def parse_mpd(root, url, parse_type):
 
     return dash_obj
 
-# this is very hacky, I will fix it later.
 def extract_base_url(dash_obj):
     with open(dash_obj['manifest_output_path'], 'r') as file:
             lines = file.readlines()
@@ -366,8 +365,6 @@ def parse_segment_template(dash_obj, compact_type, bandwidth_as_id):
 
 def get_segment_count(dash_obj, segment_counter):
     if(not segment_counter):
-
-    
         target_text = "<MPD"
         desired_line = locate_line(dash_obj['manifest_output_nested_path'], target_text)
         presentation = re.search(r'mediaPresentationDuration="(.*?)"', desired_line)
