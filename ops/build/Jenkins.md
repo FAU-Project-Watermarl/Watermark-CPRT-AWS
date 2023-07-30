@@ -33,4 +33,6 @@
 
 - [X]  Jenkins installation script directs you to the Customize Jenkins page. Click Install suggested plugins.
 - [X] Once the installation is complete, the Create First Admin User will open. Enter your information, and then select Save and Continue.
-- [X] make sure 
+- [X] make sure to copy the folder of scripts to /tmp/scripts adn the jenkins files to /tmp/jenkinsfiles in order to be able to access with jenkins user and also appply permission chmod +x to allow executions 
+
+- [X] Create the corresponding pipelines from the jenkinsfile previous copied
