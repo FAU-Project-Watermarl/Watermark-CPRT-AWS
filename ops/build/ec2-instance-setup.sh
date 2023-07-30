@@ -90,9 +90,48 @@ mkdir -p handle_extract/extract/
 # preserving the directory structure (-r recursive).
 cp -r Watermark-CPRT-AWS/pythonExtract/. ./handle_extract/extract/
 
-# Install Python 3 package manager (pip)  with the '-y' flag for automatic confirmation.
+# Install Python 3 package manager (pip) and venv  with the '-y' flag for automatic confirmation.
 sudo apt install python3-pip -y
+sudo apt install python3.10-venv -y
 
 # Change the current directory to handle_extract/extract/.
 cd handle_extract/extract/
+
+# Create a virtual environment using Python 3's built-in venv module.
+sudo python3 -m venv env
+
+# activate virtual enviroment
+source env/bin/activate
+
+# Install Python packages required packages for the app.
+python3 -m pip install -r requirements.txt
+
+# Go back to home directorie
+cd ~
+
+# Download the AWS CLI(command line interface) version 2 package for Linux (x86_64) 
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+# Install the unzip utility using the package manager (apt-get)
+# Unzip the "awscliv2.zip" package.
+sudo apt-get install unzip
+unzip awscliv2.zip
+
+# Install the libc6 library, groff, less package (apt-get) with superuser privileges (sudo).
+sudo apt-get install libc6 -y
+sudo apt-get install groff -y
+sudo apt-get install less -y
+
+# Run the installation script for AWS CLI version 2 located in the current directory.
+sudo ./aws/install
+# Check the version of the installed AWS CLI for debugging purposes.
+aws --version
+
+# Configure the AWS CLI with your access keys and preferred settings.
+# Make sure to have the follwing info to fill
+# AWS Access Key ID
+# AWS Secret Access Key
+# Default region name
+# Default output format
+aws configure
 

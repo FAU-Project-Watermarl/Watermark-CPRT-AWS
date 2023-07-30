@@ -33,6 +33,11 @@
    - `git clone https://github.com/FAU-Project-Watermarl/Watermark-CPRT-AWS.git`
 - [X] Run ec2-instance-setup.sh script inside the ec2 instance (this will install all need to run)
    - `bash ./Watermark-CPRT-AWS/ops/build/ec2-instance-setup.sh`
-
-  
-
+- [X] Make user to have AWS credential info to fill when `aws configure` is called
+   - AWS Access Key ID
+   - AWS Secret Access Key
+   - Default region name
+   - Default output format
+   
+- [X] Create MongoCredentials.env file an store credentials inside, mandatory to ruin the watermark scripts
+   - `echo 'mongodb+srv://<username>:<password>@clusterID.mongodb.net/?retryWrites=true&w=majority' > handle_extract/extract/MongoCredentials.env`

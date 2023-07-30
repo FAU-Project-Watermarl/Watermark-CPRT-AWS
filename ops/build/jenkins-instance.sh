@@ -106,7 +106,7 @@ sudo apt-get install groff
 sudo apt-get install less
 
 # Run the installation script for AWS CLI version 2 located in the current directory.
-sudo ./aws/install.
+sudo ./aws/install
 # Check the version of the installed AWS CLI for debugging purposes.
 aws --version
 
@@ -115,7 +115,7 @@ aws --version
 # AWS Access Key ID
 # AWS Secret Access Key
 # Default region name
-# Default output forma
+# Default output format
 aws configure
 
 
