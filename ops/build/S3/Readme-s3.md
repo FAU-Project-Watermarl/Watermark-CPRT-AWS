@@ -4,7 +4,7 @@
 1. In the left navigation pane, choose **Buckets**.
 2. Choose **Create bucket**.   
         
-   ![S3 buckect](./../../img/s3.jpg) 
+   ![S3 buckect](/../../img/s3.jpg) 
 
 3. For **Bucket name** enter `testbucket-watermarking`
 4. For **Region** use `us-east-1`
