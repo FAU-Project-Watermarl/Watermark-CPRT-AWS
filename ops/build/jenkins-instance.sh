@@ -83,9 +83,50 @@ sudo apt-get update
 # Install Jenkins from the newly added repository.
 # Enable the Jenkins service to start on system boot.
 # Start the Jenkins service.
+# Check the status of the Jenkins service and display it without paging the output.
 sudo apt-get install jenkins
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
+systemctl status jenkins --no-pager
 
+# Download the AWS CLI(command line interface) version 2 package for Linux (x86_64) 
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+# Install the unzip utility using the package manager (apt-get)
+# Unzip the "awscliv2.zip" package.
+sudo apt-get install unzip
+unzip awscliv2.zip
+
+# Install the glibc library, groff, less package (apt-get) with superuser privileges (sudo).
+sudo apt-get install glibc
+sudo apt-get install groff
+sudo apt-get install less
+
+# Run the installation script for AWS CLI version 2 located in the current directory.
+sudo ./aws/install.
+# Check the version of the installed AWS CLI for debugging purposes.
+aws --version
+
+# Configure the AWS CLI with your access keys and preferred settings.
+# Make sure to have the follwing info to fill
+# AWS Access Key ID
+# AWS Secret Access Key
+# Default region name
+# Default output forma
+aws configure
+
+
+# In order to allow jenkins ssh conections with ec2
+# Key pair will be need as an authethication method
+# this process is supposed to be manually to avoid storing keys file in repo on as part of any logic
+#   * Copy your Keys keyname.pem to the following directories inside jenkins server  
+#       ./var/lib/jenkins/keyname.pem
+#       ./home/admin/keyname.pem
+#   * Also assign permision to the files
+#       chmod 400 keyname.pem
+
+
+# IMPORTANT
 # Display the initial administrative password for Jenkins.
+# Use this password for first login
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
