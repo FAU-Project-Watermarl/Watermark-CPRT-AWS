@@ -25,7 +25,7 @@
    * Select an existing security group previously created
    * Launch instance.  
 
-- [X] Run jenkins-instance script inside the jenkins ec2 instance
+- [X] Run jenkins-instance.sh script inside the jenkins ec2 instance
 - [X] Connect to http://<your_server_public_DNS>:8080 from your browser(AWS ec2 DNS)
 - [X] Use initial password displayed in the script
 
