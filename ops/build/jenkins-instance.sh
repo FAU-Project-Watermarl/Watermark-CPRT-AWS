@@ -92,6 +92,21 @@ sudo systemctl enable jenkins
 sudo systemctl start jenkins
 systemctl status jenkins --no-pager
 
+# Download the MongoDB public GPG key from the MongoDB website and add it to the trusted GPG key list for APT package management.
+wget -qO- https://www.mongodb.org/static/pgp/server-6.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-6.0.asc
+
+# Add the MongoDB repository to the list of APT sources, specifying the version and architecture.
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+
+# Update the package index to ensure that the new MongoDB repository is recognized by APT.
+sudo apt-get update
+
+# Install the MongoDB Shell (mongosh) package from the MongoDB repository.
+sudo apt-get install -y mongodb-mongosh
+
+# Verified the installed version of mongosh.
+mongosh --version
+
 # Download the AWS CLI(command line interface) version 2 package for Linux (x86_64) 
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
