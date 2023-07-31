@@ -1,0 +1,23 @@
+// The EC2 instance ID that will be used in this pipeline
+INSTANCE = 'i-03d877e4cae11232c'
+
+// Inside jenkins system administration setup mongodb credentials
+// for the following enviroment variables
+// USERNAME_DB
+// PASSWORD_DB
+
+pipeline {
+    agent any
+
+    stages {
+        // Connect to mongodb using mongosh shell and display all records
+        stage('display MogoDB records') {
+            steps {
+                script {
+                    echo 'Print Database content'
+                    sh "/tmp/scripts/mongodb-display.sh $USERNAME_DB $PASSWORD_DB"
+                }
+            }
+        }
+    }
+}
