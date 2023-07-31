@@ -1,4 +1,4 @@
-# Jenkins Server installation
+# EC2 worker Server installation
 
 - [x] Prerequisites:
    * AWS account
@@ -25,7 +25,7 @@
    * Select an existing security group previously created
    * Launch instance.  
 
-![ec2 create instance](https://testbucket-watermarking.s3.amazonaws.com/doc-images/ec2.JPG | width=200)
+![ec2 create instance](https://testbucket-watermarking.s3.amazonaws.com/doc-images/ec2.JPG)
 
 - [X] SSh in your ec2 instance to check is working and you have ssh connection
    - `ssh -i "keyPair.pem" admin@ec2IpAddress`
