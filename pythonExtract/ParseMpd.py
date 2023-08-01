@@ -7,12 +7,20 @@ import Database
 import shutil
 import ErrorHandling
 
-# parse mpd -> We parse the mpd and assign all the parsed data to the dash_obj, it's pass by reference so we don't need to return anything.
+# parse mpd -> We parse the mpd and assign all the parsed data to the dash_obj
+# args -> 
+# root: root folder
+# url: a url path to the manifest
+# parse_type: whether or not we are trying to parse the main or validation script, boolean value.
+# return: dictionary value containing the mapped values for the parsed content
 def parse_mpd(root, url, parse_type):
 
     bucket_path = None
     bucket_filename = None
     uuid_value = None
+
+    if(not ".mpd" in  url):
+        ErrorHandling.error_handling_format("invalid url, must be a reference to an mpd file")
 
     if(parse_type):
         bucket_path = "testbucket-watermarking/test_signal"
@@ -174,6 +182,10 @@ def parse_mpd(root, url, parse_type):
 
     return dash_obj
 
+#extract_base_url -> checks for edge case scenario where there is an associated base url in the manifest
+# args ->
+# dash_obj: dictionary value containing the mapped values for the parsed content
+# return: boolean value, whether or not there is an base value edge case
 def extract_base_url(dash_obj):
     with open(dash_obj['manifest_output_path'], 'r') as file:
             lines = file.readlines()
@@ -187,7 +199,6 @@ def extract_base_url(dash_obj):
             url_found = False
             media_type = None
 
-            #OPTIMIZE WITH FUNC, REFACTOR
             for line in lines:
                 if(temp_base_audio_found and temp_base_audio_found):
                     break
@@ -241,10 +252,13 @@ def extract_base_url(dash_obj):
         dash_obj["edge_case_base_url"] = True
         return True
 
+# parse_segment_template -> formats the segment template and some minor string manipulation
+# args ->
+# dash_obj: dictionary value containing the mapped values for the parsed content
+# compact_type: whether or not the manifest is compact, boolean value.
+# bandwidth_as_id: edgecase if there is a bandwidth as an id representation, boolean value
 def parse_segment_template(dash_obj, compact_type, bandwidth_as_id):
 
-    # parse rep template and modify the template to work with the extract media 
-    # types of init/media 
     layout_type_temp = dash_obj["segment_template_video"] 
     replace_id = ['segment_template_video', 'segment_template_audio', 'init_template_audio', 'init_template_video']
     if(bandwidth_as_id):
@@ -300,7 +314,6 @@ def parse_segment_template(dash_obj, compact_type, bandwidth_as_id):
             video_adaptation_set_complete = False
             audio_adaptation_set_complete = False
 
-            #OPTIMIZE WITH FUNC, REFACTOR
             for line in lines:
                 if(time_segments_video != None and time_segments_audio != None and video_adaptation_set_complete and audio_adaptation_set_complete):
                     break
@@ -363,6 +376,10 @@ def parse_segment_template(dash_obj, compact_type, bandwidth_as_id):
         
     ErrorHandling.error_handling_format("Unable to find iterative format")
 
+# get_segment_count -> 
+# args ->
+# dash_obj: dictionary value containing the mapped values for the parsed content
+# segment_counter: type of iteration based on what was initially parsed, boolean value
 def get_segment_count(dash_obj, segment_counter):
     if(not segment_counter):
         target_text = "<MPD"
@@ -431,6 +448,13 @@ def get_segment_count(dash_obj, segment_counter):
             
             dash_obj['total_segments'] = r_count + s_count
 
+# custom_string -> used for string manipulation, finds where two strings have different values and then inserts a custom value so that the strings match,
+# used primarily to insert the $RepresentationID$ between two different media templates, very useful for regular expression searches.
+# args ->
+# str1: first string
+# str2: second string
+# custom_string: custom string we want to insert
+# return:
 def custom_string(str1, str2, custom_string):
     str1_len = len(str1)
     str2_len = len(str2)
@@ -457,14 +481,14 @@ def custom_string(str1, str2, custom_string):
 # get media representations -> gets the ids of the audio and video representations
 # Args:
 # dash_obj, contains all the information about the parsed mpd
+# compact: whether or not the manifest of compact or not, boolean value
+# bandwith_as_id: edge case scenario where the bandwidth is used as the represenation
 def get_media_representations(dash_obj, compact=False, bandwidth_as_id=False):
-
     with open(dash_obj['manifest_output_nested_path'], 'r') as file:
         if(bandwidth_as_id): 
             lines = file.readlines()
             in_adaptation = False
             media_type = None
-            #REFACTOR, USE FUNCTION
             for line in lines:
                 if("<Adaptation" in line):
                     in_adaptation = True
@@ -505,7 +529,6 @@ def get_media_representations(dash_obj, compact=False, bandwidth_as_id=False):
             lines = file.readlines()
             in_adaptation = False
             media_type = None
-            #REFACTOR, USE FUNCTION
             for line in lines:
                 if("<Adaptation" in line):
                     in_adaptation = True
@@ -545,10 +568,6 @@ def get_media_representations(dash_obj, compact=False, bandwidth_as_id=False):
                     dash_obj['video_qualities'].append(str(idVideo.group(1)))
                 if idAudio!=None:
                     dash_obj['audio_qualities'].append(str(idAudio.group(1)))
-
-# MAKE SURE TO IMPLEMENT, the code looks like shit; pass in dictionary value with all the stuff that needs iteration, fix later.
-def search_adaptation_set():
-    return
 
 # locate line -> locate a line inside of the manifest 
 # Args:
