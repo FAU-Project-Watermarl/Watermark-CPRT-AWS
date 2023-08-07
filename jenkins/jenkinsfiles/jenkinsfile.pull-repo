@@ -1,0 +1,24 @@
+// The EC2 instance ID that will be used in this pipeline
+INSTANCE = 'i-03d877e4cae11232c'
+
+pipeline {
+    agent any
+    stages {
+        // Stage to describe the current state of the EC2 instance
+        stage('EC2 current state') {
+            steps {
+                // Using the AWS CLI to describe the EC2 instance
+                sh "aws ec2 describe-instances --instance-ids ${INSTANCE}"
+            }
+        }
+        // Stage to run the validation script on the EC2 instance
+        stage('Pull latest changes from Gtihub') {
+            steps {
+                script {
+                    echo 'Delete temporary folder and files'
+                    sh '/tmp/scripts/pull-repo.sh'
+                }
+            }
+        }
+    }
+}
