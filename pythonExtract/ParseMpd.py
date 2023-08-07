@@ -96,7 +96,7 @@ def parse_mpd(root, url, parse_type):
 
         is_base_url_edge_case = extract_base_url(dash_obj)
         if(is_base_url_edge_case):
-            return
+            return dash_obj
 
         for line in lines:
             if(audio_init_template != None and video_init_template != None and audio_segments != None and video_segments != None):
